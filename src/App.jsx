@@ -4,12 +4,12 @@ import axios from "axios";
 
 function App() {
   const [boards, setBoards] = useState([]);
-  console.log(boards);
+
   const onSubmit = async (e) => {
     e.preventDefault();
     const title = e.target.elements[0].value;
     const content = e.target.elements[1].value;
-    const res = await axios.post(`http://${location.hostname}:8081/api/v1/demo1`, { title, content });
+    const res = await axios.post(`/api/v1/demo1`, { title, content });
 
     if (res.status !== 201) {
       return;
@@ -17,7 +17,7 @@ function App() {
     setBoards([...boards, res.data]);
   };
   const getBoards = async () => {
-    const res = await axios.get(`http://${location.hostname}:8081/api/v1/demo1`);
+    const res = await axios.get(`/api/v1/demo1`);
 
     if (res.status === 200 && Array.isArray(res.data)) {
       setBoards(res.data);
@@ -28,7 +28,7 @@ function App() {
   }, []);
   const open = async (id) => {
     const board = boards.find((b) => b.id === id);
-    const res = await axios.get(`http://${location.hostname}:8080/api/v1/demo2/${id}`);
+    const res = await axios.get(`/api/v1/demo2/${id}`);
     if (res.status === 200 && Array.isArray(res.data)) {
       board.comments = res.data;
       board.open = !board.open;
@@ -37,7 +37,7 @@ function App() {
   };
   const saveComment = async (e, board) => {
     e.preventDefault();
-    const res = await axios.post(`http://${location.hostname}:8080/api/v1/demo2`, { content: e.target.elements[0].value, boardId: board.id });
+    const res = await axios.post(`/api/v1/demo2`, { content: e.target.elements[0].value, boardId: board.id });
 
     if (res.status !== 201) {
       return;
